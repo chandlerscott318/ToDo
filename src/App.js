@@ -17,6 +17,7 @@ import { Link, Route } from "react-router-dom";
 import { auth } from "./firebase";
 
 export function SignIn(props) {
+  console.log("chandler");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
