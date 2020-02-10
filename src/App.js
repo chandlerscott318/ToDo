@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import MenuIcon from "@material-ui/icons/Menu";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
   AppBar,
   Button,
@@ -6,6 +8,9 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  Checkbox,
   Paper,
   TextField,
   Toolbar,
@@ -66,6 +71,33 @@ export function App(props) {
       <div>
         <Paper style={{ padding: "30px", width: "700px" }}>
           <Typography variant="h6">To Do List</Typography>
+
+          <List>
+            {[0, 1, 2, 3].map(value => {
+              const labelId = `checkbox-list-label-${value}`;
+
+              return (
+                <ListItem key={value}>
+                  <ListItemIcon>
+                    <Checkbox
+                      edge="start"
+                      // checked={checked.indexOf(value) !== -1}
+                      inputProps={{ "aria-labelledby": labelId }}
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    id={labelId}
+                    primary={`Line item ${value + 1}`}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" aria-label="comments">
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              );
+            })}
+          </List>
         </Paper>
       </div>
     </div>
