@@ -73,6 +73,16 @@ export function App(props) {
       >
         <Paper style={{ padding: "30px", width: "700px" }}>
           <Typography variant="h6">To Do List</Typography>
+          <div style={{ display: "flex", marginTop: "30px" }}>
+            <TextField
+              fullWidth={true}
+              placeholder="Add a new task here"
+              style={{ marginRight: "30px" }}
+            />
+            <Button variant="contained" color="primary">
+              Add
+            </Button>
+          </div>
 
           <List>
             {[0, 1, 2, 3].map(value => {
