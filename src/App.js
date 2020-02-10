@@ -68,7 +68,9 @@ export function App(props) {
           </Button>
         </Toolbar>
       </AppBar>
-      <div>
+      <div
+        style={{ display: "flex", justifyContent: "center", marginTop: "30px" }}
+      >
         <Paper style={{ padding: "30px", width: "700px" }}>
           <Typography variant="h6">To Do List</Typography>
 
