@@ -21,6 +21,10 @@ import { auth } from "./firebase";
 
 export function App(props) {
   const [user, setUser] = useState(null);
+  const [tasks, setTasks] = useState([
+    { id: 1, text: "some task", checked: false },
+    { id: 2, text: "another task", checked: true }
+  ]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(u => {
@@ -85,22 +89,19 @@ export function App(props) {
           </div>
 
           <List>
-            {[0, 1, 2, 3].map(value => {
+            {tasks.map(value => {
               const labelId = `checkbox-list-label-${value}`;
 
               return (
-                <ListItem key={value}>
+                <ListItem key={value.id}>
                   <ListItemIcon>
                     <Checkbox
-                      edge="start"
+                      checked={value.checked}
                       // checked={checked.indexOf(value) !== -1}
                       inputProps={{ "aria-labelledby": labelId }}
                     />
                   </ListItemIcon>
-                  <ListItemText
-                    id={labelId}
-                    primary={`Line item ${value + 1}`}
-                  />
+                  <ListItemText id={labelId} primary={value.text} />
                   <ListItemSecondaryAction>
                     <IconButton edge="end" aria-label="comments">
                       <DeleteIcon />
