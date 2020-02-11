@@ -49,6 +49,18 @@ export function App(props) {
       });
   };
 
+  const handleAddTask = () => {
+    console.log("add task");
+  };
+
+  const handleDeleteTask = () => {
+    console.log("delete task");
+  };
+
+  const handleCheckTask = checked => {
+    console.log("check task", checked);
+  };
+
   if (!user) {
     return <div />;
   }
@@ -83,7 +95,7 @@ export function App(props) {
               placeholder="Add a new task here"
               style={{ marginRight: "30px" }}
             />
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={handleAddTask}>
               Add
             </Button>
           </div>
@@ -97,13 +109,16 @@ export function App(props) {
                   <ListItemIcon>
                     <Checkbox
                       checked={value.checked}
+                      onChange={(e, checked) => {
+                        handleCheckTask(checked);
+                      }}
                       // checked={checked.indexOf(value) !== -1}
                       inputProps={{ "aria-labelledby": labelId }}
                     />
                   </ListItemIcon>
                   <ListItemText id={labelId} primary={value.text} />
                   <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="comments">
+                    <IconButton onClick={handleDeleteTask}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
