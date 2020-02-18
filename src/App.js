@@ -17,14 +17,12 @@ import {
   Typography
 } from "@material-ui/core";
 import { Link, Route } from "react-router-dom";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase";
 
 export function App(props) {
   const [user, setUser] = useState(null);
-  const [tasks, setTasks] = useState([
-    { id: 1, text: "some task", checked: false },
-    { id: 2, text: "another task", checked: true }
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [new_task, setNewTask] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(u => {
@@ -38,6 +36,31 @@ export function App(props) {
     return unsubscribe;
   }, [props.history]);
 
+  useEffect(() => {
+    let unsubscribe;
+
+    if (user) {
+      unsubscribe = db
+        .collection("users")
+        .doc(user.uid)
+        .collection("tasks")
+        .onSnapshot(snapshot => {
+          const updated_tasks = [];
+          snapshot.forEach(doc => {
+            const data = doc.data();
+            updated_tasks.push({
+              text: data.text,
+              checked: data.checked,
+              id: doc.id
+            });
+          });
+          setTasks(updated_tasks);
+        });
+    }
+
+    return unsubscribe;
+  }, [user]);
+
   const handleSignOut = () => {
     auth
       .signOut()
@@ -50,7 +73,13 @@ export function App(props) {
   };
 
   const handleAddTask = () => {
-    console.log("add task");
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .add({ text: new_task, checked: false })
+      .then(() => {
+        setNewTask("");
+      });
   };
 
   const handleDeleteTask = () => {
@@ -94,6 +123,10 @@ export function App(props) {
               fullWidth={true}
               placeholder="Add a new task here"
               style={{ marginRight: "30px" }}
+              value={new_task}
+              onChange={e => {
+                setNewTask(e.target.value);
+              }}
             />
             <Button variant="contained" color="primary" onClick={handleAddTask}>
               Add
