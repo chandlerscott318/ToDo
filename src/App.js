@@ -14,7 +14,12 @@ import {
   Paper,
   TextField,
   Toolbar,
-  Typography
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from "@material-ui/core";
 import { Link, Route } from "react-router-dom";
 import { auth, db } from "./firebase";
@@ -90,6 +95,16 @@ export function App(props) {
       .delete();
   };
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleCheckTask = (checked, task_id) => {
     db.collection("users")
       .doc(user.uid)
@@ -104,6 +119,29 @@ export function App(props) {
 
   return (
     <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this task?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this task?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="secondary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <AppBar position="static" color="primary">
         <Toolbar>
           <Typography
@@ -164,11 +202,7 @@ export function App(props) {
                   </ListItemIcon>
                   <ListItemText id={labelId} primary={value.text} />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() => {
-                        handleDeleteTask(value.id);
-                      }}
-                    >
+                    <IconButton onClick={handleClickOpen}>
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
