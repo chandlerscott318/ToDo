@@ -14,7 +14,12 @@ import {
   Paper,
   TextField,
   Toolbar,
-  Typography
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
 } from "@material-ui/core";
 import { Link, Route } from "react-router-dom";
 import { auth, db } from "./firebase";
@@ -94,6 +99,16 @@ export function App(props) {
       .delete();
   };
 
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleCheckTask = (checked, task_id) => {
     db.collection("users")
       .doc(user.uid)
@@ -117,6 +132,29 @@ export function App(props) {
 
   return (
     <div>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure you want to delete this task?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to delete this task?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button onClick={handleClose} color="secondary" autoFocus>
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       <AppBar position="static" color="primary">
         <Toolbar>
           <Typography
@@ -160,7 +198,7 @@ export function App(props) {
           </div>
           <div>
             <Typography variant="h6" style={{ marginTop: "30px" }}>
-              Incomplete Tasks
+              Incompleted Tasks
             </Typography>
             <List>
               {tasks
@@ -171,33 +209,52 @@ export function App(props) {
                   const labelId = `checkbox-list-label-${value}`;
 
                   return (
-                    <ListItem key={value.id}>
-                      <ListItemIcon>
-                        <Checkbox
-                          checked={value.checked}
-                          onChange={(e, checked) => {
-                            handleCheckTask(checked, value.id);
-                          }}
-                          // checked={checked.indexOf(value) !== -1}
-                          inputProps={{ "aria-labelledby": labelId }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText id={labelId} primary={value.text} />
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={() => {
-                            handleDeleteTask(value.id);
-                          }}
-                        >
-                          <DeleteIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
+                    <div>
+                      <ListItem key={value.id}>
+                        <ListItemIcon>
+                          <Checkbox
+                            checked={value.checked}
+                            onChange={(e, checked) => {
+                              handleCheckTask(checked, value.id);
+                            }}
+                            // checked={checked.indexOf(value) !== -1}
+                            inputProps={{ "aria-labelledby": labelId }}
+                          />
+                        </ListItemIcon>
+                        <ListItemText id={labelId} primary={value.text} />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={() => {
+                              handleDeleteTask(value.id);
+                            }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                          <FormControl>
+                            <InputLabel htmlFor="age-native-simple">
+                              Priority
+                            </InputLabel>
+                            <Select
+                              native
+                              value={value.priority}
+                              onChange={e => {
+                                handleChange(e.target.value, value.id);
+                                console.log(value);
+                              }}
+                            >
+                              <option value={"Low"}>Low</option>
+                              <option value={"Medium"}>Medium</option>
+                              <option value={"High"}>High</option>
+                            </Select>
+                          </FormControl>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                      <div></div>
+                    </div>
                   );
                 })}
             </List>
           </div>
-
           <div>
             <Typography variant="h6" style={{ marginTop: "30px" }}>
               Completed Tasks
