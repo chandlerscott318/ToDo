@@ -136,7 +136,12 @@ export function App(props) {
                 setNewTask(e.target.value);
               }}
             />
-            <Button variant="contained" color="primary" onClick={handleAddTask}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddTask}
+              disabled={new_task === ""}
+            >
               Add
             </Button>
           </div>
