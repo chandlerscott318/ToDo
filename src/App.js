@@ -82,12 +82,20 @@ export function App(props) {
       });
   };
 
-  const handleDeleteTask = () => {
-    console.log("delete task");
+  const handleDeleteTask = task_id => {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(task_id)
+      .delete();
   };
 
-  const handleCheckTask = checked => {
-    console.log("check task", checked);
+  const handleCheckTask = (checked, task_id) => {
+    db.collection("users")
+      .doc(user.uid)
+      .collection("tasks")
+      .doc(task_id)
+      .update({ checked: checked });
   };
 
   if (!user) {
@@ -143,7 +151,7 @@ export function App(props) {
                     <Checkbox
                       checked={value.checked}
                       onChange={(e, checked) => {
-                        handleCheckTask(checked);
+                        handleCheckTask(checked, value.id);
                       }}
                       // checked={checked.indexOf(value) !== -1}
                       inputProps={{ "aria-labelledby": labelId }}
@@ -151,7 +159,11 @@ export function App(props) {
                   </ListItemIcon>
                   <ListItemText id={labelId} primary={value.text} />
                   <ListItemSecondaryAction>
-                    <IconButton onClick={handleDeleteTask}>
+                    <IconButton
+                      onClick={() => {
+                        handleDeleteTask(value.id);
+                      }}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
