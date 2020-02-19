@@ -145,37 +145,85 @@ export function App(props) {
               Add
             </Button>
           </div>
+          <div>
+            <Typography variant="h6" style={{ marginTop: "30px" }}>
+              Incomplete Tasks
+            </Typography>
+            <List>
+              {tasks
+                .filter(task => {
+                  return task.checked === false;
+                })
+                .map(value => {
+                  const labelId = `checkbox-list-label-${value}`;
 
-          <List>
-            {tasks.map(value => {
-              const labelId = `checkbox-list-label-${value}`;
+                  return (
+                    <ListItem key={value.id}>
+                      <ListItemIcon>
+                        <Checkbox
+                          checked={value.checked}
+                          onChange={(e, checked) => {
+                            handleCheckTask(checked, value.id);
+                          }}
+                          // checked={checked.indexOf(value) !== -1}
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText id={labelId} primary={value.text} />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => {
+                            handleDeleteTask(value.id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </div>
 
-              return (
-                <ListItem key={value.id}>
-                  <ListItemIcon>
-                    <Checkbox
-                      checked={value.checked}
-                      onChange={(e, checked) => {
-                        handleCheckTask(checked, value.id);
-                      }}
-                      // checked={checked.indexOf(value) !== -1}
-                      inputProps={{ "aria-labelledby": labelId }}
-                    />
-                  </ListItemIcon>
-                  <ListItemText id={labelId} primary={value.text} />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() => {
-                        handleDeleteTask(value.id);
-                      }}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              );
-            })}
-          </List>
+          <div>
+            <Typography variant="h6" style={{ marginTop: "30px" }}>
+              Completed Tasks
+            </Typography>
+            <List>
+              {tasks
+                .filter(task => {
+                  return task.checked === true;
+                })
+                .map(value => {
+                  const labelId = `checkbox-list-label-${value}`;
+
+                  return (
+                    <ListItem key={value.id}>
+                      <ListItemIcon>
+                        <Checkbox
+                          checked={value.checked}
+                          onChange={(e, checked) => {
+                            handleCheckTask(checked, value.id);
+                          }}
+                          // checked={checked.indexOf(value) !== -1}
+                          inputProps={{ "aria-labelledby": labelId }}
+                        />
+                      </ListItemIcon>
+                      <ListItemText id={labelId} primary={value.text} />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => {
+                            handleDeleteTask(value.id);
+                          }}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  );
+                })}
+            </List>
+          </div>
         </Paper>
       </div>
     </div>
