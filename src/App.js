@@ -141,16 +141,15 @@ export function App(props) {
         <DialogTitle id="alert-dialog-title">
           {"Are you sure you want to delete this task?"}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Are you sure you want to delete this task?
-          </DialogContentText>
-        </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button variant="contained" onClick={handleClose} autoFocus>
             Cancel
           </Button>
-          <Button onClick={handleClose} color="secondary" autoFocus>
+          <Button
+            variant="contained"
+            onClick={handleDeleteTask}
+            color="primary"
+          >
             Delete
           </Button>
         </DialogActions>
@@ -223,13 +222,6 @@ export function App(props) {
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={value.text} />
                         <ListItemSecondaryAction>
-                          <IconButton
-                            onClick={() => {
-                              handleDeleteTask(value.id);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
                           <FormControl>
                             <InputLabel htmlFor="age-native-simple">
                               Priority
@@ -239,7 +231,6 @@ export function App(props) {
                               value={value.priority}
                               onChange={e => {
                                 handleChange(e.target.value, value.id);
-                                console.log(value);
                               }}
                             >
                               <option value={"Low"}>Low</option>
@@ -247,6 +238,9 @@ export function App(props) {
                               <option value={"High"}>High</option>
                             </Select>
                           </FormControl>
+                          <IconButton onClick={handleClickOpen}>
+                            <DeleteIcon />
+                          </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <div></div>
@@ -282,13 +276,6 @@ export function App(props) {
                         </ListItemIcon>
                         <ListItemText id={labelId} primary={value.text} />
                         <ListItemSecondaryAction>
-                          <IconButton
-                            onClick={() => {
-                              handleDeleteTask(value.id);
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
                           <FormControl>
                             <InputLabel htmlFor="age-native-simple">
                               Priority
@@ -298,7 +285,6 @@ export function App(props) {
                               value={value.priority}
                               onChange={e => {
                                 handleChange(e.target.value, value.id);
-                                console.log(value);
                               }}
                             >
                               <option value={"Low"}>Low</option>
@@ -306,6 +292,14 @@ export function App(props) {
                               <option value={"High"}>High</option>
                             </Select>
                           </FormControl>
+                          <IconButton
+                            onClick={handleClickOpen}
+                            // onClick={() => {
+                            // handleDeleteTask(value.id);
+                            // }}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
                         </ListItemSecondaryAction>
                       </ListItem>
                       <div></div>
