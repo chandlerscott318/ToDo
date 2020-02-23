@@ -145,11 +145,7 @@ export function App(props) {
           <Button variant="contained" onClick={handleClose} autoFocus>
             Cancel
           </Button>
-          <Button
-            variant="contained"
-            onClick={handleDeleteTask}
-            color="primary"
-          >
+          <Button variant="contained" onClick={handleClose} color="primary">
             Delete
           </Button>
         </DialogActions>
