@@ -289,7 +289,9 @@ export function App(props) {
                             </Select>
                           </FormControl>
                           <IconButton
-                            onClick={handleClickOpen}
+                            onClick={() => {
+                              handleClickOpen(value.id);
+                            }}
                             // onClick={() => {
                             // handleDeleteTask(value.id);
                             // }}
